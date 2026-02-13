@@ -18,9 +18,12 @@ class dataset_1(Dataset):
         img_path = os.path.join(self.img_dir, self.img_labels.iloc[id, 0])
         image = decode_image(img_path)
         label = self.img_labels.iloc[id, 1]
-
+        x_center =self.img_labels.iloc[id,2]
+        y_center =self.img_labels.iloc[id,3]
+        width = self.img_labels.iloc[id,4]
+        height = self.img_labels.iloc[id,5]
         if self.transform:
             image = self.transform(image)
         if self.target_transform:
             label = self.target_transform(label)
-        return image, label
+        return image, label,x_center,y_center,width,height
