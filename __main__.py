@@ -2,8 +2,8 @@ import custom_datasets as cd
 from torch.utils.data import DataLoader, Dataset
 import matplotlib.pyplot as plt
 import neural_network_class as nnc
-import os
 import torch
+import torchvision.models as models
 from torch import nn
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
@@ -28,13 +28,15 @@ train_dataloader = DataLoader(training_data, batch_size=16, shuffle=True)
 #     print(f"Label: {label}")
 
 device = torch.accelerator.current_accelerator().type if torch.accelerator.is_available() else "cpu"
-nnc_model=nnc.NeuralNetwork().to(device)
+nnc_model=torch.load('basic_model.pth',weights_only=False)
+# nnc_model=nnc.NeuralNetwork()
+nnc_model.to(device)
 flatten = nn.Flatten()
-layer_1 = nn.Linear(in_features=640 * 640, out_features=20)
+layer_1 = nn.Linear(in_features=640 * 640, out_features=24)
 
 softmax = nn.Softmax(dim=1)
 
-epochs=20
+epochs=10
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(nnc_model.parameters(), lr=1e-3)
 
@@ -45,9 +47,14 @@ for epoch in range(epochs):
     print(f"starting poch {epoch + 1}/{epochs}  {((epoch + 1)/(epochs))*100}%")
     c = 0
     f=0
-    for img, label, x_cent, y_cent, w, h in train_dataloader:
+    for img, label,x_center,y_center,width,height in train_dataloader:
         img=img.to(device)
         label=label.to(device)
+
+        x_center=x_center.to(device)
+        y_center=y_center.to(device)
+        width=width.to(device)
+        height=height.to(device)
         with torch.autocast(device_type="cuda"):
             logits=nnc_model(img)
 
@@ -74,3 +81,5 @@ for epoch in range(epochs):
 
 print(f"total elapsed time {int((time()-t)//60)}:{(time()-t)%60}")
 print(f"accuracy stat {" ".join(acc_list)}")
+
+torch.save(nnc_model, 'basic_model.pth')

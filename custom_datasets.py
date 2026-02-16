@@ -17,7 +17,7 @@ class dataset_1(Dataset):
     def __getitem__(self, id):
         img_path = os.path.join(self.img_dir, self.img_labels.iloc[id, 0])
         image = decode_image(img_path).float()/255.0
-        label = self.img_labels.iloc[id, 1]
+        label = int(self.img_labels.iloc[id, 1])
         x_center =self.img_labels.iloc[id,2]
         y_center =self.img_labels.iloc[id,3]
         width = self.img_labels.iloc[id,4]

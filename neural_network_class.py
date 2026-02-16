@@ -9,7 +9,6 @@ class NeuralNetwork(nn.Module):
         super().__init__()
 
         self.features = nn.Sequential(
-
             nn.Conv2d(3, 32, 3, padding=1),
             nn.ReLU(),
             nn.MaxPool2d(4),
@@ -38,9 +37,3 @@ class NeuralNetwork(nn.Module):
         x = self.pool(x)      # [B,256,1,1]
         logits = self.classifier(x)
         return logits
-
-
-# device = torch.accelerator.current_accelerator().type if torch.accelerator.is_available() else "cpu"
-# print(f"Using {device} device")
-# model = NeuralNetwork().to(device)
-# print(model)
