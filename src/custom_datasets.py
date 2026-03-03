@@ -5,7 +5,7 @@ from torch.utils.data import Dataset
 
 class dataset_1(Dataset):
     def __init__(self,target,transform=None, target_transform=None):
-        path=open('path.txt',"r+").readline()
+        path=open('../path.txt', "r+").readline()
         self.img_labels=pd.read_csv(f"{path}\\archive1\\dataset_v2\\{target}\\label.csv")
         self.img_dir=f"{path}\\archive1\\dataset_v2\\{target}\\images"
         self.transform=transform

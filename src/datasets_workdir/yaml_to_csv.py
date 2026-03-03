@@ -23,5 +23,5 @@ def quick_convert(input_dir, output_file="labels.txt"):
                     print(f"Ошибка при чтении {filename}: {e}")
 
     print(f"✅ Преобразование завершено! Результат в {output_file}")
-path=open("path.txt","r+").readline()
+path=open("../../path.txt", "r+").readline()
 quick_convert(f"{path}\\archive1\\dataset_v2\\test\\labels","E:\\Users\\Public\\Documents\\archive1\\dataset_v2\\test\\label.csv")
