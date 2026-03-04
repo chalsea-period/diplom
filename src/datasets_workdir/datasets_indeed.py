@@ -82,9 +82,10 @@ def refactor_intel_dataset():
     print(f"Всего изображений: {len(df)}")
     print(f"CSV сохранён: {CSV_PATH}")
 
-#refactor_intel_dataset()
+# del_avi_csv_flac_in_intel()
+# refactor_intel_dataset()
 
-file=open("some path")
+file=open("E:\\Users\\Public\\Documents\\intel_robotic_welding_dataset\\labels.csv","r")
 read_file=file.read()
 split_file=read_file.split("\n")
 class_list=[]
@@ -95,6 +96,7 @@ except Exception as e:
     print(e)
     print(i)
 class_list.pop(class_list.index("class"))
+class_list.sort()
 class_set=set(class_list)
 for i in class_set:
     print(i)

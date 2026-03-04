@@ -2,10 +2,12 @@ import os
 import pandas as pd
 from torchvision.io import decode_image
 from torch.utils.data import Dataset
+from torchvision import transforms
+
 
 class dataset_1(Dataset):
     def __init__(self,target,transform=None, target_transform=None):
-        path=open('../path.txt', "r+").readline()
+        path=open('../path.txt', "r+").readline().strip()
         self.img_labels=pd.read_csv(f"{path}\\archive1\\dataset_v2\\{target}\\label.csv")
         self.img_dir=f"{path}\\archive1\\dataset_v2\\{target}\\images"
         self.transform=transform
@@ -27,3 +29,24 @@ class dataset_1(Dataset):
         if self.target_transform:
             label = self.target_transform(label)
         return image, label,x_center,y_center,width,height
+
+class intel_dataset(Dataset):
+    def __init__(self,transform=None, target_transform=None):
+        path=open('../path.txt', "r+").readline().strip()
+        self.img_labels = pd.read_csv(os.path.join(path, "intel_robotic_welding_dataset", "labels.csv"))
+        self.img_dir = os.path.join(path, "intel_robotic_welding_dataset", "images")
+        self.transform = transform if transform else transforms.Compose([transforms.Resize((288, 288))])
+        self.target_transform=target_transform
+
+    def __len__(self):
+        return len(self.img_labels)
+
+    def __getitem__(self, id):
+        img_path = os.path.join(self.img_dir, self.img_labels.iloc[id, 0])
+        image = decode_image(img_path).float()/255.0
+        label = int(self.img_labels.iloc[id, 1])
+        if self.transform:
+            image = self.transform(image)
+        if self.target_transform:
+            label = self.target_transform(label)
+        return image, label

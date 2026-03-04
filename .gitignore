@@ -1,4 +1,4 @@
 /datasets.txt
 /path.txt
 /sources.txt
-/basic_model.pth
+/src/models/basic_model.pth
